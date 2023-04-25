@@ -1,0 +1,33 @@
+def toList(str):
+    letters = []
+    for letter in str:
+        if (letter not in letters):
+            letters.append(letter)
+    print(letters)
+    return letters
+
+#def createPerm(str):
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def permAlone(str):
+    arr = toList(str)
+    print(arr)
+    string = ''.join(arr)
+    print(string)
+    return str
+
+
+permAlone('aab')

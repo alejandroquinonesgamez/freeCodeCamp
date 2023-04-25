@@ -1,0 +1,90 @@
+function isPrime(number) {
+  if (number < 2) {
+    return;
+  }
+  for (let i=2; i<=number/2; i++) {
+    if (number%i === 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function primeList(number) {
+  let arr = [];
+  for (let i=0; i<=number; i++) {
+    if (isPrime(i)) {
+      arr.push(i)
+    }
+  }
+  return arr;
+}
+
+function divisors(number) {
+  let arr = [];
+  for (let i=1; i<=number/2; i++) {
+    if (number%i === 0) {
+      arr.push(i);
+    }
+  }
+  arr.push(number);
+  return arr;
+}
+
+function factorize(number, factors={}) {
+  if (isPrime(number)) {
+    if(factors[number] == undefined) {
+      factors[number] = 1;
+    } else {
+      factors[number] += 1;
+    }
+    return factors;
+  }
+  let arr = primeList(number);
+  for (let i=0; i<arr.length; i++) {
+    if (number%arr[i] == 0) {
+      if(factors[arr[i]] == undefined) {
+        factors[arr[i]] = 1;
+      } else {
+        factors[arr[i]] += 1;
+      }
+      factors = factorize(number/arr[i], factors);
+      i=arr.length;
+    }
+  }
+  return factors;
+}
+
+function smallestCommons(arr) {
+  let scm = 1;
+  let a = arr[0];
+  let b = arr[0];
+  arr[1] > b ? b=arr[1] : a=arr[1];
+  let numList = [];
+  for (let i=a; i<=b; i++) {
+    numList.push(i);
+  }
+  let commonFactors = factorize(numList[0]);
+  for (let i=1; i<numList.length; i++) {
+    let factors = factorize(numList[i]);
+    for (let prime in factors) {
+      if (commonFactors.hasOwnProperty(prime)) {
+        if(factors[prime] > commonFactors[prime]) {
+        commonFactors[prime] = factors[prime];
+        }
+      } else {
+        commonFactors[prime] = factors[prime];
+      }      
+    }
+  }
+  for (let prime in commonFactors) {
+    console.log(prime, commonFactors[prime], scm)
+    for (let i = commonFactors[prime]; i>0; i--){
+      scm *= prime;
+    }
+  }
+  console.log(scm);
+  return scm;
+}
+
+smallestCommons([2,10]);
